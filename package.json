@@ -1,13 +1,19 @@
 {
   "name": "needmanager",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "A manager to handle multiple instances of needjs.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha",
+    "gen-doc": "jsdoc2md --files index.js > docs/api.md"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Sajjad Heydari <mcshemail@gmail.com>, gosaya co",
+  "license": "GPL-3.0",
   "dependencies": {
+    "needjs": "^0.4.0"
+  },
+  "devDependencies": {
+    "jsdoc-to-markdown": "^3.0.0",
+    "mocha": "^3.4.2"
   }
 }

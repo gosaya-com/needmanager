@@ -1,59 +1,114 @@
-var Store = require('./lib/store.js');
-var MemoryStore = require('./lib/memory.js');
-
 /**
  * Need Manager
  *
  * @param option {Object} option - The manager's configs
- * @param option.store {Store} option - An express-session comptaible store
+ * @param option.store {Store} [store=MemoryStore]  - An express-session comptaible store
+ * @param option.needjs {needjs} [needjs] - A needjs engine
+ * @param option.idkey {String} [idkey='sid'] - The default key for storing sid in system.
  */
 var manager = function(options){
     var opts = options || {};
 
-    this.needjs = opts.needjs || require('needjs');
-    this.store = opts.store || new MemoryStore(); // TODO
-
+    this.needjs = opts.needjs || new require('needjs');
+    this.Need = this.needjs.Need;
+    if(opts.store){
+        this.store = opts.store;
+    } else {
+        var MemoryStore = require('./lib/memory.js');
+        this.store = new MemoryStore();
+    }
     this.idkey = opts.idkey || 'sid';
-    this.base = new this.needjs();
 
+    this.base = new this.needjs();
     this.cache = {};
     this.queue = {};
 }
 
+/**
+ * Forget a previous need's answer.
+ *
+ * Use this when you need to re-run a need in the future.
+ * @param {String} sid - Session id
+ * @param {String} need - need's name
+ */
 manager.prototype.forget = function forget(sid, need){
     this.get(sid, function(system){
         system.forget(need);
     });
 }
 
+/**
+ * Inform a system about a need's value.
+ *
+ * @param {String} sid - Session id
+ * @param {String} name - Need's name
+ * @param {Object} info - Need's value
+ */
 manager.prototype.inform = function inform(sid, name, info){
     this.get(sid, function(system){
         system.inform(name, info);
     });
 }
 
+/**
+ * Invoke an event
+ *
+ * @param {String} sid - Session id
+ * @param {String} eventName - Event name
+ * @param {Object} eventData - Event data
+ */
 manager.prototype.invoke = function invoke(sid, eventName, eventData){
     this.get(sid, function(system){
         system.invoke(eventName, eventData);
     });
 }
 
+/**
+ * Load the system from previously saved state
+ *
+ * @param {String} sid - Session id
+ * @param {Config} config -- A previously saved state
+ */
 manager.prototype.load = function load(sid, config){
     this.get(sid, function(system){
         system.load(config);
     });
 }
 
+/**
+ * Process the system in the next tick
+ *
+ * @param {String} sid - Session id
+ */
 manager.prototype.next = function next(sid){
     this.get(sid, function(system){
         system.next();
     });
 }
 
+/**
+ * Register a need into system
+ *
+ * @param {String} sid - Session id
+ * @param {Need} need
+ */
 manager.prototype.register = function register(need){
     this.base.register(need);
 }
 
+/**
+ * This callback is called when the system's save is ready.
+ *
+ * @callback saveCallback
+ * @param {Config} System's state
+ */
+
+/**
+ * Save system's state
+ *
+ * @param {String} sid - Session id
+ * @param {saveCallback} callback -  System's state
+ */
 manager.prototype.save = function save(sid, callback){
     var mngr = this;
     this.get(sid, function(system){
@@ -71,6 +126,13 @@ manager.prototype.save = function save(sid, callback){
     });
 }
 
+/**
+ * Trigger a need for the system.
+ *
+ * @param {String} sid - Session id
+ * @param {String} name - Need's name
+ * @param {String} father - [father=null] Do not set father, for internal purpose only
+ */
 manager.prototype.trigger = function trigger(sid, need){
     this.get(sid, function(system){
         system.trigger(need);
@@ -125,7 +187,6 @@ manager.prototype.makeSession = function makeSession(sid, config){
 }
 
 manager.prototype.unload = function unload(sid){
-    console.log("unloading");
     this.save(sid);
     delete this.cache[sid];
     this.cache[sid] = undefined;

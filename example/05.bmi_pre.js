@@ -1,9 +1,6 @@
-var NeedJS = require('needjs');
-var Need = NeedJS.Need;
 var Manager = require('..');
-sys = new Manager({
-    needjs : NeedJS
-});
+sys = new Manager();
+var Need = sys.Need;
 
 var rl = require('readline').createInterface({
     input: process.stdin,
