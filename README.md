@@ -1,3 +1,4 @@
+# needmanager
 needmanager is a session-manager for needjs. It can handle multiple systems of needjs who share the same logic.
 
 First install needmanager:
@@ -34,7 +35,7 @@ Note that sid could be of anytype, although it's suggested to use either a Numbe
 
 For more examples, checkout the examples folder.
 
-# Using different stores
+## Using different stores
 The default instance of needmanager uses MemoryManager to manage it's instances. needmanager's store is compatible with expressjs' session's stores. To see a full list please look [here](https://github.com/expressjs/session#compatible-session-stores).
 
 To change the store you need to pass `store` in the configs.
@@ -45,7 +46,7 @@ var sys = new needmanager({
 })
 ```
 
-#Using different needjs engine:
+## Using different needjs engine:
 You can use diferent needjs engines. To do so pass `needjs` in the configs.
 ```
 var CustomneedJS = require('CustomneedJS');
