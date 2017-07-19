@@ -1,6 +1,6 @@
 {
   "name": "needmanager",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A manager to handle multiple instances of needjs.",
   "main": "index.js",
   "scripts": {

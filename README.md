@@ -8,14 +8,14 @@ $ npm install --save needmanager
 
 Then in your project, require it.
 
-```
+``` javascript
 var needmanager = require('needmanager');
 var sys = new needmanager();
 var Need = sys.Need;
 ```
 
 Now you can register your needs just like you do in needjs:
-```
+``` javascript
 sys.register(new Need({
     name: 'need',
     post: function(data){
@@ -26,7 +26,7 @@ sys.register(new Need({
 
 Now for other functions, such as forget, trigger, etc you have to add an additional argument, session id or sid for short:
 
-```
+``` javascript
 sys.trigger(0, 'main');
 sys.trigger('user one', 'main');
 ```
@@ -39,7 +39,7 @@ For more examples, checkout the examples folder.
 The default instance of needmanager uses MemoryManager to manage it's instances. needmanager's store is compatible with expressjs' session's stores. To see a full list please look [here](https://github.com/expressjs/session#compatible-session-stores).
 
 To change the store you need to pass `store` in the configs.
-```
+``` javascript
 var YourStore = require('YourStore');
 var sys = new needmanager({
     store: new YourStore();
@@ -48,7 +48,7 @@ var sys = new needmanager({
 
 ## Using different needjs engine:
 You can use diferent needjs engines. To do so pass `needjs` in the configs.
-```
+``` javascript
 var CustomneedJS = require('CustomneedJS');
 var sys = new needmanager({
     needjs: CustomneedJS
