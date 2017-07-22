@@ -18,10 +18,31 @@ var manager = function(options){
         this.store = new MemoryStore();
     }
     this.idkey = opts.idkey || 'sid';
-
+    this.db_options = opts.db_options || '_base_';
     this.base = new this.needjs();
     this.cache = {};
     this.queue = {};
+
+    // Copy everything else from base
+    for(var i in this.base)
+        if(i instanceof Function && typeof(this[i]) ==='undefined')
+            this[i] = function(sid, ...args){
+                this.get(sid, function(system){
+                    system[i].apply(syste, args);
+                });
+            }
+    var self = this;
+    process.nextTick(()=>{
+        this.store.get(this.db_options, function(data){
+            if (data)
+                for(var i in data.cache){
+                    sef.get(i);
+                }
+            process.nextTick(function(){
+                self.tick;
+            });
+        });
+    });
 }
 
 /**
@@ -190,6 +211,20 @@ manager.prototype.unload = function unload(sid){
     this.save(sid);
     delete this.cache[sid];
     this.cache[sid] = undefined;
+}
+
+manager.prototype.tick = function tick(){
+    var data = {};
+    console.log(this.cache);
+    data.cache = Object.keys(this.cache);
+
+    this.store.set(this.db_options, data, function(err){
+        console.log(err);
+    });
+
+    process.nextTick(()=>{
+        this.tick();
+    });
 }
 
 function clone(obj){
