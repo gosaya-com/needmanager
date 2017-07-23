@@ -232,5 +232,5 @@ function clone(obj){
     return JSON.parse(JSON.stringify(obj));
 }
 
-manager.Store = require('lib/store.js');
+manager.Store = require('./lib/store.js');
 module.exports = manager;
