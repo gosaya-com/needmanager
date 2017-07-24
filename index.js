@@ -176,7 +176,7 @@ manager.prototype.get = function get(sid, callback){
             var q = mngr.queue[sid];
             delete mngr.queue[sid];
             do {
-                var callback = q.pop();
+                var callback = q.shift();
                 callback(session);
             } while(q.length != 0);
         });
