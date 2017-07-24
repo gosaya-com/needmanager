@@ -14,7 +14,7 @@
     "url": "https://github.com/gosaya-com/needmanager"
   },
   "dependencies": {
-    "needjs": "^0.4.0"
+    "needjs": "^0.4.5"
   },
   "devDependencies": {
     "jsdoc-to-markdown": "^3.0.0",
