@@ -222,6 +222,10 @@ manager.prototype.tick = function tick(){
         console.log(err);
     });
 
+    for(var i in this.cache){
+        this.save(i);
+    }
+
     process.nextTick(()=>{
         this.tick();
     });
