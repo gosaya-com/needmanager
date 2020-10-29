@@ -1,4 +1,7 @@
 # needmanager
+
+Needmanager's maintenance is currently halted. We will monitor issues and pull requests, but there won't be any active development until further notice.
+
 needmanager is a session-manager for needjs. It can handle multiple systems of needjs who share the same logic.
 
 First install needmanager:
